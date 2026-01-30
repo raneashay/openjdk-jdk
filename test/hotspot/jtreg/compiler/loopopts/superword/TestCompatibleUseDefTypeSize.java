@@ -314,7 +314,7 @@ public class TestCompatibleUseDefTypeSize {
     }
 
     @Test
-    @IR(counts = {IRNode.STORE_VECTOR, "= 0"},
+    @IR(counts = {IRNode.STORE_VECTOR_C, "= 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     // "inflate"  method: 1 byte -> 2 byte.
@@ -328,7 +328,7 @@ public class TestCompatibleUseDefTypeSize {
     }
 
     @Test
-    @IR(counts = {IRNode.STORE_VECTOR, "= 0"},
+    @IR(counts = {IRNode.STORE_VECTOR_C, "= 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     // "inflate"  method: 1 byte -> 2 byte.
@@ -342,7 +342,7 @@ public class TestCompatibleUseDefTypeSize {
     }
 
     @Test
-    @IR(counts = {IRNode.STORE_VECTOR, "= 0"},
+    @IR(counts = {IRNode.STORE_VECTOR_C, "= 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     // "deflate"  method: 2 byte -> 1 byte.
@@ -358,7 +358,7 @@ public class TestCompatibleUseDefTypeSize {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "> 0",
                   IRNode.ADD_VI,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_I,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIf = {"AlignVector", "false"}, // a[i] and a[i+1] cannot both be aligned.
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
@@ -376,7 +376,7 @@ public class TestCompatibleUseDefTypeSize {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "> 0",
                   IRNode.ADD_VI,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_I,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIf = {"AlignVector", "false"}, // a[i] and a[i+1] cannot both be aligned.
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
@@ -390,7 +390,7 @@ public class TestCompatibleUseDefTypeSize {
     }
 
     @Test
-    @IR(counts = {IRNode.STORE_VECTOR, "= 0"},
+    @IR(counts = {IRNode.STORE_VECTOR_F, "= 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     // In theory, one would expect this to be a simple 4byte -> 4byte conversion.
@@ -406,7 +406,7 @@ public class TestCompatibleUseDefTypeSize {
 
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_F, IRNode.VECTOR_SIZE + "min(max_int, max_float)", "> 0",
-                  IRNode.STORE_VECTOR, "> 0",
+                  IRNode.STORE_VECTOR_I, "> 0",
                   IRNode.VECTOR_REINTERPRET, "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
@@ -419,7 +419,7 @@ public class TestCompatibleUseDefTypeSize {
 
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "> 0",
-                  IRNode.STORE_VECTOR, "> 0",
+                  IRNode.STORE_VECTOR_F, "> 0",
                   IRNode.VECTOR_REINTERPRET, "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
@@ -431,7 +431,7 @@ public class TestCompatibleUseDefTypeSize {
     }
 
     @Test
-    @IR(counts = {IRNode.STORE_VECTOR, "= 0"},
+    @IR(counts = {IRNode.STORE_VECTOR_L, "= 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     // Missing support to vectorize CmpD and CMove
@@ -444,7 +444,7 @@ public class TestCompatibleUseDefTypeSize {
 
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_D, IRNode.VECTOR_SIZE + "min(max_long, max_double)", "> 0",
-                  IRNode.STORE_VECTOR, "> 0",
+                  IRNode.STORE_VECTOR_L, "> 0",
                   IRNode.VECTOR_REINTERPRET, "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
@@ -457,7 +457,7 @@ public class TestCompatibleUseDefTypeSize {
 
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_L, "> 0",
-                  IRNode.STORE_VECTOR, "> 0",
+                  IRNode.STORE_VECTOR_D, "> 0",
                   IRNode.VECTOR_REINTERPRET, "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})

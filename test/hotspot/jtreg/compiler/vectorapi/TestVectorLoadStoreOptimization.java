@@ -78,7 +78,7 @@ public class TestVectorLoadStoreOptimization {
     // Test that "StoreVectorNode::Ideal()" calls "StoreNode::Ideal()" as expected,
     // which can get rid of previous stores that go to the same position.
     @Test
-    @IR(counts = { IRNode.STORE_VECTOR, "1" },
+    @IR(counts = { IRNode.STORE_VECTOR_I, "1" },
         applyIfCPUFeatureOr = {"asimd", "true", "avx", "true", "rvv", "true"})
     public static void testStoreVector() {
         IntVector v1 = IntVector.fromArray(SPECIES, a, 0 * SPECIES.length());

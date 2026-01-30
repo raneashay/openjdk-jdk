@@ -519,7 +519,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "= 0",
                   IRNode.ADD_VB,        "= 0",
-                  IRNode.STORE_VECTOR,  "= 0"},
+                  IRNode.STORE_VECTOR_B,  "= 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     // FAILS
@@ -538,7 +538,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "> 0",
                   IRNode.ADD_VB,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_B,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     static Object[] testIntLoop_iv_byte(MemorySegment a) {
@@ -553,7 +553,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "> 0",
                   IRNode.ADD_VB,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_B,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     static Object[] testIntLoop_longIndex_intInvar_sameAdr_byte(MemorySegment a, int invar) {
@@ -568,7 +568,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "> 0",
                   IRNode.ADD_VB,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_B,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     static Object[] testIntLoop_longIndex_longInvar_sameAdr_byte(MemorySegment a, long invar) {
@@ -583,7 +583,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "> 0",
                   IRNode.ADD_VB,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_B,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     static Object[] testIntLoop_longIndex_intInvar_byte(MemorySegment a, int invar) {
@@ -599,7 +599,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "> 0",
                   IRNode.ADD_VB,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_B,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     static Object[] testIntLoop_longIndex_longInvar_byte(MemorySegment a, long invar) {
@@ -615,7 +615,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "= 0",
                   IRNode.ADD_VB,        "= 0",
-                  IRNode.STORE_VECTOR,  "= 0"},
+                  IRNode.STORE_VECTOR_B,  "= 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     // FAILS: RangeCheck cannot be eliminated because of int_index
@@ -631,7 +631,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "> 0",
                   IRNode.ADD_VI,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_I,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIf = {"AlignVector", "false"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
@@ -647,7 +647,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "> 0",
                   IRNode.ADD_VI,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_I,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIf = {"AlignVector", "false"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
@@ -663,7 +663,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "> 0",
                   IRNode.ADD_VI,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_I,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIf = {"AlignVector", "false"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
@@ -679,7 +679,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "> 0",
                   IRNode.ADD_VI,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_I,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIf = {"AlignVector", "false"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
@@ -696,7 +696,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "> 0",
                   IRNode.ADD_VI,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_I,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIf = {"AlignVector", "false"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
@@ -713,7 +713,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "= 0",
                   IRNode.ADD_VI,        "= 0",
-                  IRNode.STORE_VECTOR,  "= 0"},
+                  IRNode.STORE_VECTOR_I,  "= 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     // FAILS: RangeCheck cannot be eliminated because of int_index
@@ -729,7 +729,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "> 0",
                   IRNode.ADD_VB,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_B,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     static Object[] testLongLoop_iv_byte(MemorySegment a) {
@@ -744,7 +744,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "> 0",
                   IRNode.ADD_VB,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_B,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     static Object[] testLongLoop_longIndex_intInvar_sameAdr_byte(MemorySegment a, int invar) {
@@ -759,7 +759,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "> 0",
                   IRNode.ADD_VB,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_B,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     static Object[] testLongLoop_longIndex_longInvar_sameAdr_byte(MemorySegment a, long invar) {
@@ -774,7 +774,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "> 0",
                   IRNode.ADD_VB,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_B,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     static Object[] testLongLoop_longIndex_intInvar_byte(MemorySegment a, int invar) {
@@ -790,7 +790,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "> 0",
                   IRNode.ADD_VB,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_B,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     static Object[] testLongLoop_longIndex_longInvar_byte(MemorySegment a, long invar) {
@@ -806,7 +806,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "= 0",
                   IRNode.ADD_VB,        "= 0",
-                  IRNode.STORE_VECTOR,  "= 0"},
+                  IRNode.STORE_VECTOR_B,  "= 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     // FAILS: RangeCheck cannot be eliminated because of int_index
@@ -822,7 +822,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "> 0",
                   IRNode.ADD_VI,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_I,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIf = {"AlignVector", "false"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
@@ -838,7 +838,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "> 0",
                   IRNode.ADD_VI,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_I,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIf = {"AlignVector", "false"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
@@ -854,7 +854,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "> 0",
                   IRNode.ADD_VI,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_I,  "> 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIf = {"AlignVector", "false"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
@@ -870,7 +870,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "> 0",
                   IRNode.ADD_VI,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_I,  "> 0"},
         applyIf = { "AlignVector", "false" },
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
@@ -887,7 +887,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "> 0",
                   IRNode.ADD_VI,        "> 0",
-                  IRNode.STORE_VECTOR,  "> 0"},
+                  IRNode.STORE_VECTOR_I,  "> 0"},
         applyIf = { "AlignVector", "false" },
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
@@ -904,7 +904,7 @@ class TestMemorySegmentImpl {
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "= 0",
                   IRNode.ADD_VI,        "= 0",
-                  IRNode.STORE_VECTOR,  "= 0"},
+                  IRNode.STORE_VECTOR_I,  "= 0"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true", "rvv", "true"})
     // FAILS: RangeCheck cannot be eliminated because of int_index

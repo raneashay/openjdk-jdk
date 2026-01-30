@@ -101,7 +101,7 @@ public class TestVectorOperationsWithPartialSize {
     @Test
     @IR(counts = {IRNode.VECTOR_MASK_GEN, "0",
                   IRNode.LOAD_VECTOR_I, IRNode.VECTOR_SIZE_4, "1",
-                  IRNode.STORE_VECTOR, "1"},
+                  IRNode.STORE_VECTOR_I, IRNode.VECTOR_SIZE_4, "1"},
         applyIfCPUFeature = {"sve", "true"}, applyIf = {"MaxVectorSize", ">=32"})
     public void testLoadStore_128() {
         IntVector v = IntVector.fromArray(ISPEC_128, ia, 0);

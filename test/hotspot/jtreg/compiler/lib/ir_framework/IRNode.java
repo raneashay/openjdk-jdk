@@ -117,13 +117,14 @@ public class IRNode {
     public static final String VECTOR_SIZE_32  = VECTOR_SIZE + "32";
     public static final String VECTOR_SIZE_64  = VECTOR_SIZE + "64";
 
-    private static final String TYPE_BYTE   = "B";
-    private static final String TYPE_CHAR   = "C";
-    private static final String TYPE_SHORT  = "S";
-    private static final String TYPE_INT    = "I";
-    private static final String TYPE_LONG   = "J";
-    private static final String TYPE_FLOAT  = "F";
-    private static final String TYPE_DOUBLE = "D";
+    private static final String TYPE_BYTE    = "B";
+    private static final String TYPE_CHAR    = "C";
+    private static final String TYPE_SHORT   = "S";
+    private static final String TYPE_INT     = "I";
+    private static final String TYPE_LONG    = "J";
+    private static final String TYPE_FLOAT   = "F";
+    private static final String TYPE_DOUBLE  = "D";
+    private static final String TYPE_BOOLEAN = "Z";
 
     /**
      * IR placeholder string to regex-for-compile-phase map.
@@ -2096,6 +2097,46 @@ public class IRNode {
         storeOfNodes(STORE_P_OF_CLASS, "StoreP");
     }
 
+    public static final String STORE_VECTOR_B = VECTOR_PREFIX + "STORE_VECTOR_B" + POSTFIX;
+    static {
+        vectorNode(STORE_VECTOR_B, "StoreVector", TYPE_BYTE);
+    }
+
+    public static final String STORE_VECTOR_C = VECTOR_PREFIX + "STORE_VECTOR_C" + POSTFIX;
+    static {
+        vectorNode(STORE_VECTOR_C, "StoreVector", TYPE_CHAR);
+    }
+
+    public static final String STORE_VECTOR_S = VECTOR_PREFIX + "STORE_VECTOR_S" + POSTFIX;
+    static {
+        vectorNode(STORE_VECTOR_S, "StoreVector", TYPE_SHORT);
+    }
+
+    public static final String STORE_VECTOR_I = VECTOR_PREFIX + "STORE_VECTOR_I" + POSTFIX;
+    static {
+        vectorNode(STORE_VECTOR_I, "StoreVector", TYPE_INT);
+    }
+
+    public static final String STORE_VECTOR_L = VECTOR_PREFIX + "STORE_VECTOR_L" + POSTFIX;
+    static {
+        vectorNode(STORE_VECTOR_L, "StoreVector", TYPE_LONG);
+    }
+
+    public static final String STORE_VECTOR_F = VECTOR_PREFIX + "STORE_VECTOR_F" + POSTFIX;
+    static {
+        vectorNode(STORE_VECTOR_F, "StoreVector", TYPE_FLOAT);
+    }
+
+    public static final String STORE_VECTOR_D = VECTOR_PREFIX + "STORE_VECTOR_D" + POSTFIX;
+    static {
+        vectorNode(STORE_VECTOR_D, "StoreVector", TYPE_DOUBLE);
+    }
+
+    public static final String STORE_VECTOR_Z = VECTOR_PREFIX + "STORE_VECTOR_Z" + POSTFIX;
+    static {
+        vectorNode(STORE_VECTOR_Z, "StoreVector", TYPE_BOOLEAN);
+    }
+
     public static final String STORE_VECTOR = PREFIX + "STORE_VECTOR" + POSTFIX;
     static {
         beforeMatchingNameRegex(STORE_VECTOR, "StoreVector");
@@ -3397,6 +3438,7 @@ public class IRNode {
             case "max_long"          -> String.valueOf(getMaxElementsForType(TYPE_LONG, vmInfo));
             case "max_float"         -> String.valueOf(getMaxElementsForType(TYPE_FLOAT, vmInfo));
             case "max_double"        -> String.valueOf(getMaxElementsForType(TYPE_DOUBLE, vmInfo));
+            case "max_boolean"       -> String.valueOf(getMaxElementsForType(TYPE_BOOLEAN, vmInfo));
             case "LoopMaxUnroll"     -> String.valueOf(vmInfo.getLongValue("LoopMaxUnroll"));
             default                  -> sizeTagString;
         };
@@ -3459,8 +3501,10 @@ public class IRNode {
         if (avx1 && (typeString.equals(TYPE_FLOAT) || typeString.equals(TYPE_DOUBLE))) {
             maxBytes = avx512 ? 64 : 32;
         }
-        if (avx512 && (typeString.equals(TYPE_BYTE) || typeString.equals(TYPE_SHORT) || typeString.equals(TYPE_CHAR))) {
-            maxBytes = avx512bw ? 64 : 32;
+        if (avx512 &&
+            (typeString.equals(TYPE_BYTE) || typeString.equals(TYPE_BOOLEAN) ||
+             typeString.equals(TYPE_SHORT) || typeString.equals(TYPE_CHAR))) {
+          maxBytes = avx512bw ? 64 : 32;
         }
 
         return maxBytes;
@@ -3471,11 +3515,11 @@ public class IRNode {
      */
     public static int getTypeSizeInBytes(String typeString) {
         return switch (typeString) {
-            case TYPE_BYTE              -> 1;
-            case TYPE_CHAR, TYPE_SHORT  -> 2;
-            case TYPE_INT, TYPE_FLOAT   -> 4;
-            case TYPE_LONG, TYPE_DOUBLE -> 8;
-            default                     -> 0;
+            case TYPE_BYTE, TYPE_BOOLEAN -> 1;
+            case TYPE_CHAR, TYPE_SHORT   -> 2;
+            case TYPE_INT, TYPE_FLOAT    -> 4;
+            case TYPE_LONG, TYPE_DOUBLE  -> 8;
+            default                      -> 0;
         };
     }
 

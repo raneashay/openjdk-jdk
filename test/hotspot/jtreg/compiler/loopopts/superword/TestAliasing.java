@@ -258,7 +258,7 @@ public class TestAliasing {
 
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "> 0",
-                  IRNode.STORE_VECTOR, "> 0",
+                  IRNode.STORE_VECTOR_B, "> 0",
                   ".*multiversion.*", "= 0"},
         phase = CompilePhase.PRINT_IDEAL,
         applyIfPlatform = {"64-bit", "true"},
@@ -272,7 +272,7 @@ public class TestAliasing {
 
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "> 0",
-                  IRNode.STORE_VECTOR, "> 0",
+                  IRNode.STORE_VECTOR_B, "> 0",
                   ".*multiversion.*", "= 0"},
         phase = CompilePhase.PRINT_IDEAL,
         applyIfPlatform = {"64-bit", "true"},
@@ -286,7 +286,7 @@ public class TestAliasing {
 
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "= 0",
-                  IRNode.STORE_VECTOR, "= 0",
+                  IRNode.STORE_VECTOR_B, "= 0",
                   ".*multiversion.*", "= 0"},
         phase = CompilePhase.PRINT_IDEAL,
         applyIf = {"UseAutoVectorizationSpeculativeAliasingChecks", "false"},
@@ -294,7 +294,7 @@ public class TestAliasing {
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true"})
     // Without speculative runtime check we cannot know that there is no aliasing.
     @IR(counts = {IRNode.LOAD_VECTOR_B, "> 0",
-                  IRNode.STORE_VECTOR, "> 0",
+                  IRNode.STORE_VECTOR_B, "> 0",
                   ".*multiversion.*", "= 0"},
         phase = CompilePhase.PRINT_IDEAL,
         applyIfAnd = {"UseAutoVectorizationSpeculativeAliasingChecks", "true", "AlignVector", "false"},
@@ -310,7 +310,7 @@ public class TestAliasing {
 
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "= 0",
-                  IRNode.STORE_VECTOR, "= 0",
+                  IRNode.STORE_VECTOR_B, "= 0",
                   ".*multiversion.*", "= 0"},
         phase = CompilePhase.PRINT_IDEAL,
         applyIf = {"UseAutoVectorizationSpeculativeAliasingChecks", "false"},
@@ -318,7 +318,7 @@ public class TestAliasing {
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true"})
     // Without speculative runtime check we cannot know that there is no aliasing.
     @IR(counts = {IRNode.LOAD_VECTOR_B, "> 0",
-                  IRNode.STORE_VECTOR, "> 0",
+                  IRNode.STORE_VECTOR_B, "> 0",
                   ".*multiversion.*", "= 0"},
         phase = CompilePhase.PRINT_IDEAL,
         applyIfAnd = {"UseAutoVectorizationSpeculativeAliasingChecks", "true", "AlignVector", "false"},
@@ -337,7 +337,7 @@ public class TestAliasing {
 
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_B, "= 0",
-                  IRNode.STORE_VECTOR, "= 0",
+                  IRNode.STORE_VECTOR_B, "= 0",
                   ".*multiversion.*", "= 0"},
         phase = CompilePhase.PRINT_IDEAL,
         applyIf = {"UseAutoVectorizationSpeculativeAliasingChecks", "false"},
@@ -345,7 +345,7 @@ public class TestAliasing {
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true"})
     // Without speculative runtime check we cannot know that there is no aliasing.
     @IR(counts = {IRNode.LOAD_VECTOR_B,            "> 0",
-                  IRNode.STORE_VECTOR,             "> 0",
+                  IRNode.STORE_VECTOR_B,             "> 0",
                   ".*pre .* multiversion_fast.*",  "= 1",
                   ".*main .* multiversion_fast.*", "= 1",
                   ".*post .* multiversion_fast.*", "= 2", // vectorized and scalar versions
@@ -366,7 +366,7 @@ public class TestAliasing {
 
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "> 0",
-                  IRNode.STORE_VECTOR, "> 0",
+                  IRNode.STORE_VECTOR_I, "> 0",
                   ".*multiversion.*", "= 0"},
         phase = CompilePhase.PRINT_IDEAL,
         applyIfPlatform = {"64-bit", "true"},
@@ -380,7 +380,7 @@ public class TestAliasing {
 
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "> 0",
-                  IRNode.STORE_VECTOR, "> 0",
+                  IRNode.STORE_VECTOR_I, "> 0",
                   ".*multiversion.*", "= 0"},
         phase = CompilePhase.PRINT_IDEAL,
         applyIfPlatform = {"64-bit", "true"},
@@ -394,7 +394,7 @@ public class TestAliasing {
 
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "= 0",
-                  IRNode.STORE_VECTOR, "= 0",
+                  IRNode.STORE_VECTOR_I, "= 0",
                   ".*multiversion.*", "= 0"},
         phase = CompilePhase.PRINT_IDEAL,
         applyIf = {"UseAutoVectorizationSpeculativeAliasingChecks", "false"},
@@ -402,7 +402,7 @@ public class TestAliasing {
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true"})
     // Without speculative runtime check we cannot know that there is no aliasing.
     @IR(counts = {IRNode.LOAD_VECTOR_I, "> 0",
-                  IRNode.STORE_VECTOR, "> 0",
+                  IRNode.STORE_VECTOR_I, "> 0",
                   ".*multiversion.*", "= 0"},
         phase = CompilePhase.PRINT_IDEAL,
         applyIfAnd = {"UseAutoVectorizationSpeculativeAliasingChecks", "true", "AlignVector", "false"},
@@ -418,7 +418,7 @@ public class TestAliasing {
 
     @Test
     @IR(counts = {IRNode.LOAD_VECTOR_I, "= 0",
-                  IRNode.STORE_VECTOR, "= 0",
+                  IRNode.STORE_VECTOR_I, "= 0",
                   ".*multiversion.*", "= 0"},
         phase = CompilePhase.PRINT_IDEAL,
         applyIf = {"UseAutoVectorizationSpeculativeAliasingChecks", "false"},
@@ -426,7 +426,7 @@ public class TestAliasing {
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true"})
     // Without speculative runtime check we cannot know that there is no aliasing.
     @IR(counts = {IRNode.LOAD_VECTOR_I,            "> 0",
-                  IRNode.STORE_VECTOR,             "> 0",
+                  IRNode.STORE_VECTOR_I,             "> 0",
                   ".*pre .* multiversion_fast.*",  "= 1",
                   ".*main .* multiversion_fast.*", "= 1",
                   ".*post .* multiversion_fast.*", "= 2", // vectorized and scalar versions
@@ -446,14 +446,14 @@ public class TestAliasing {
     }
 
     @Test
-    @IR(counts = {IRNode.STORE_VECTOR, "= 0",
+    @IR(counts = {IRNode.STORE_VECTOR_B, "= 0",
                   ".*multiversion.*", "= 0"},
         phase = CompilePhase.PRINT_IDEAL,
         applyIf = {"UseAutoVectorizationSpeculativeAliasingChecks", "false"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true"})
     // Without speculative runtime check we cannot know that there is no aliasing.
-    @IR(counts = {IRNode.STORE_VECTOR,             "> 0",
+    @IR(counts = {IRNode.STORE_VECTOR_B,             "> 0",
                   ".*pre .* multiversion_fast.*",  "= 1",
                   ".*main .* multiversion_fast.*", "= 1",
                   ".*post .* multiversion_fast.*", "= 2", // vectorized and scalar versions
@@ -485,14 +485,14 @@ public class TestAliasing {
     }
 
     @Test
-    @IR(counts = {IRNode.STORE_VECTOR, "= 0",
+    @IR(counts = {IRNode.STORE_VECTOR_B, "= 0",
                   ".*multiversion.*", "= 0"},
         phase = CompilePhase.PRINT_IDEAL,
         applyIf = {"UseAutoVectorizationSpeculativeAliasingChecks", "false"},
         applyIfPlatform = {"64-bit", "true"},
         applyIfCPUFeatureOr = {"sse4.1", "true", "asimd", "true"})
     // Without speculative runtime check we cannot know that there is no aliasing.
-    @IR(counts = {IRNode.STORE_VECTOR,             "> 0",
+    @IR(counts = {IRNode.STORE_VECTOR_B,             "> 0",
                   ".*multiversion.*",              "= 0"},
         phase = CompilePhase.PRINT_IDEAL,
         applyIfAnd = {"UseAutoVectorizationSpeculativeAliasingChecks", "true",

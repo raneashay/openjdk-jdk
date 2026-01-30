@@ -1139,6 +1139,14 @@ Node* StoreVectorNode::Ideal(PhaseGVN* phase, bool can_reshape) {
   return StoreNode::Ideal(phase, can_reshape);
 }
 
+#ifndef PRODUCT
+void StoreVectorNode::dump_spec(outputStream *st) const {
+  StoreNode::dump_spec(st);
+  st->print(" #");
+  _vect_type->dump_on(st);
+}
+#endif // !PRODUCT
+
 Node* LoadVectorMaskedNode::Ideal(PhaseGVN* phase, bool can_reshape) {
   if (!in(3)->is_top() && in(3)->Opcode() == Op_VectorMaskGen) {
     Node* mask_len = in(3)->in(1);

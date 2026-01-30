@@ -1149,6 +1149,9 @@ class StoreVectorNode : public StoreNode {
   bool must_verify_alignment() const { return _must_verify_alignment; }
   void set_must_verify_alignment() { _must_verify_alignment = true; }
 #endif
+#ifndef PRODUCT
+  virtual void dump_spec(outputStream *st) const;
+#endif // !PRODUCT
 };
 
 // Store Vector into memory via index map

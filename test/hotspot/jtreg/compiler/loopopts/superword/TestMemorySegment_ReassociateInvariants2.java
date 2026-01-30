@@ -66,7 +66,7 @@ public class TestMemorySegment_ReassociateInvariants2 {
 
     @Test
     @Arguments(setup = "setup")
-    @IR(counts = {IRNode.STORE_VECTOR, "> 0",
+    @IR(counts = {IRNode.STORE_VECTOR_S, "> 0",
                   IRNode.REPLICATE_S,  "> 0",
                   ".*multiversion.*",  "= 0"}, // Good: The AutoVectorization predicate suffices.
         phase = CompilePhase.PRINT_IDEAL,
@@ -74,7 +74,7 @@ public class TestMemorySegment_ReassociateInvariants2 {
         applyIfAnd = {"AlignVector", "false", "ShortRunningLongLoop", "false"},
         applyIfCPUFeatureOr = {"avx", "true", "asimd", "true"})
     //
-    @IR(counts = {IRNode.STORE_VECTOR, "> 0",
+    @IR(counts = {IRNode.STORE_VECTOR_S, "> 0",
                   IRNode.REPLICATE_S,  "> 0",
                   ".*multiversion.*",  "= 0"},
         phase = CompilePhase.PRINT_IDEAL,
