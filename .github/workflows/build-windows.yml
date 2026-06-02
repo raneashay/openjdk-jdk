@@ -61,6 +61,10 @@ on:
         required: false
         type: boolean
         default: false
+      ref:
+        required: false
+        type: string
+        default: ''
 
 env:
   # These are needed to make the MSYS2 bash work properly
@@ -69,7 +73,7 @@ env:
 
 jobs:
   build-windows:
-    name: build
+    name: build on ${{ inputs.runs-on }}
     runs-on: ${{ inputs.runs-on }}
     defaults:
       run:
@@ -87,6 +91,26 @@ jobs:
     steps:
       - name: 'Checkout the JDK source'
         uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: 'Overlay actions from workflow branch'
+        if: ${{ inputs.ref != '' }}
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.ref }}
+          sparse-checkout: |
+            .github/actions
+            make/conf/github-actions.conf
+          path: __actions_overlay
+
+      - name: 'Copy workflow branch actions'
+        if: ${{ inputs.ref != '' }}
+        run: |
+          cp -r __actions_overlay/.github/actions/* .github/actions/
+          cp -f __actions_overlay/make/conf/github-actions.conf make/conf/github-actions.conf
+          rm -rf __actions_overlay
+        shell: bash
 
       - name: 'Get MSYS2'
         uses: ./.github/actions/get-msys2

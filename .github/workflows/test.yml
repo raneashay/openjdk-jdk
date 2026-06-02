@@ -53,6 +53,14 @@ on:
       static-suffix:
         required: false
         type: string
+      test-groups:
+        required: false
+        type: string
+        default: 'hotspot/tier1'
+      ref:
+        required: false
+        type: string
+        default: ''
 
 env:
   # These are needed to make the MSYS2 bash work properly
@@ -60,9 +68,79 @@ env:
   CHERE_INVOKING: 1
 
 jobs:
+  prepare-tests:
+    name: 'Expand test groups'
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.expand.outputs.value }}
+    steps:
+      - name: 'Expand group names to test suites'
+        id: expand
+        run: |
+          mapping='{
+            "jdk/tier1": [
+              {"name": "jdk/tier1 part 1", "suite": "test/jdk/:tier1_part1"},
+              {"name": "jdk/tier1 part 2", "suite": "test/jdk/:tier1_part2"},
+              {"name": "jdk/tier1 part 3", "suite": "test/jdk/:tier1_part3"}
+            ],
+            "jdk/tier2": [
+              {"name": "jdk/tier2 part 1", "suite": "test/jdk/:tier2_part1"},
+              {"name": "jdk/tier2 part 2", "suite": "test/jdk/:tier2_part2"},
+              {"name": "jdk/tier2 part 3", "suite": "test/jdk/:tier2_part3"}
+            ],
+            "jdk/tier3": [
+              {"name": "jdk/tier3 part 1", "suite": "test/jdk/:tier3_part1"},
+              {"name": "jdk/tier3 jpackage", "suite": "test/jdk/:tier3_jpackage"}
+            ],
+            "jdk/tier4": [
+              {"name": "jdk/tier4", "suite": "test/jdk/:tier4"}
+            ],
+            "langtools/tier1": [
+              {"name": "langtools/tier1", "suite": "test/langtools/:tier1"}
+            ],
+            "langtools/tier2": [
+              {"name": "langtools/tier2", "suite": "test/langtools/:tier2"}
+            ],
+            "langtools/tier3": [
+              {"name": "langtools/tier3", "suite": "test/langtools/:tier3"}
+            ],
+            "langtools/tier4": [
+              {"name": "langtools/tier4", "suite": "test/langtools/:tier4"}
+            ],
+            "hotspot/tier1": [
+              {"name": "hs/tier1 common",          "suite": "test/hotspot/jtreg/:tier1_common",          "debug": true},
+              {"name": "hs/tier1 compiler part 1", "suite": "test/hotspot/jtreg/:tier1_compiler_1",      "debug": true},
+              {"name": "hs/tier1 compiler part 2", "suite": "test/hotspot/jtreg/:tier1_compiler_2",      "debug": true},
+              {"name": "hs/tier1 compiler part 3", "suite": "test/hotspot/jtreg/:tier1_compiler_3",      "debug": true},
+              {"name": "hs/tier1 gc",              "suite": "test/hotspot/jtreg/:tier1_gc",              "debug": true},
+              {"name": "hs/tier1 runtime",         "suite": "test/hotspot/jtreg/:tier1_runtime",         "debug": true},
+              {"name": "hs/tier1 serviceability",  "suite": "test/hotspot/jtreg/:tier1_serviceability",  "debug": true}
+            ],
+            "hotspot/tier2": [
+              {"name": "hs/tier2", "suite": "test/hotspot/jtreg/:tier2", "debug": true}
+            ],
+            "hotspot/tier3": [
+              {"name": "hs/tier3", "suite": "test/hotspot/jtreg/:tier3", "debug": true}
+            ],
+            "hotspot/tier4": [
+              {"name": "hs/tier4", "suite": "test/hotspot/jtreg/:tier4", "debug": true}
+            ],
+            "lib-test/tier1": [
+              {"name": "lib-test/tier1", "suite": "test/lib-test/:tier1", "debug": true}
+            ]
+          }'
+
+          selected='${{ inputs.test-groups }}'
+          echo "value=$(echo "$mapping" | jq -c --arg sel "$selected" '
+            ($sel | split(",") | map(gsub("^\\s+|\\s+$";""))) as $groups |
+            [to_entries[] | select(.key as $k | $groups | index($k)) | .value[]]
+          ')" >> $GITHUB_OUTPUT
+
   test:
-    name: test
+    name: test (${{ matrix.test.name }})
+    needs: prepare-tests
     runs-on: ${{ inputs.runs-on }}
+    if: ${{ needs.prepare-tests.outputs.matrix != '[]' }}
     defaults:
       run:
         shell: bash
@@ -70,68 +148,31 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        test-name:
-          - 'jdk/tier1 part 1'
-          - 'jdk/tier1 part 2'
-          - 'jdk/tier1 part 3'
-          - 'langtools/tier1'
-          - 'hs/tier1 common'
-          - 'hs/tier1 compiler part 1'
-          - 'hs/tier1 compiler part 2'
-          - 'hs/tier1 compiler part 3'
-          - 'hs/tier1 gc'
-          - 'hs/tier1 runtime'
-          - 'hs/tier1 serviceability'
-          - 'lib-test/tier1'
-
-        include:
-          - test-name: 'jdk/tier1 part 1'
-            test-suite: 'test/jdk/:tier1_part1'
-
-          - test-name: 'jdk/tier1 part 2'
-            test-suite: 'test/jdk/:tier1_part2'
-
-          - test-name: 'jdk/tier1 part 3'
-            test-suite: 'test/jdk/:tier1_part3'
-
-          - test-name: 'langtools/tier1'
-            test-suite: 'test/langtools/:tier1'
-
-          - test-name: 'hs/tier1 common'
-            test-suite: 'test/hotspot/jtreg/:tier1_common'
-            debug-suffix: ${{ inputs.debug-suffix }}
-
-          - test-name: 'hs/tier1 compiler part 1'
-            test-suite: 'test/hotspot/jtreg/:tier1_compiler_1'
-            debug-suffix: ${{ inputs.debug-suffix }}
-
-          - test-name: 'hs/tier1 compiler part 2'
-            test-suite: 'test/hotspot/jtreg/:tier1_compiler_2'
-            debug-suffix: ${{ inputs.debug-suffix }}
-
-          - test-name: 'hs/tier1 compiler part 3'
-            test-suite: 'test/hotspot/jtreg/:tier1_compiler_3'
-            debug-suffix: ${{ inputs.debug-suffix }}
-
-          - test-name: 'hs/tier1 gc'
-            test-suite: 'test/hotspot/jtreg/:tier1_gc'
-            debug-suffix: ${{ inputs.debug-suffix }}
-
-          - test-name: 'hs/tier1 runtime'
-            test-suite: 'test/hotspot/jtreg/:tier1_runtime'
-            debug-suffix: ${{ inputs.debug-suffix }}
-
-          - test-name: 'hs/tier1 serviceability'
-            test-suite: 'test/hotspot/jtreg/:tier1_serviceability'
-            debug-suffix: ${{ inputs.debug-suffix }}
-
-          - test-name: 'lib-test/tier1'
-            test-suite: 'test/lib-test/:tier1'
-            debug-suffix: ${{ inputs.debug-suffix }}
+        test: ${{ fromJSON(needs.prepare-tests.outputs.matrix) }}
 
     steps:
       - name: 'Checkout the JDK source'
         uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: 'Overlay actions from workflow branch'
+        if: ${{ inputs.ref != '' }}
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.ref }}
+          sparse-checkout: |
+            .github/actions
+            make/conf/github-actions.conf
+          path: __actions_overlay
+
+      - name: 'Copy workflow branch actions'
+        if: ${{ inputs.ref != '' }}
+        run: |
+          cp -r __actions_overlay/.github/actions/* .github/actions/
+          cp -f __actions_overlay/make/conf/github-actions.conf make/conf/github-actions.conf
+          rm -rf __actions_overlay
+        shell: bash
 
       - name: 'Get MSYS2'
         uses: ./.github/actions/get-msys2
@@ -154,7 +195,7 @@ jobs:
         uses: ./.github/actions/get-bundles
         with:
           platform: ${{ inputs.platform }}
-          debug-suffix: ${{ matrix.debug-suffix }}
+          debug-suffix: ${{ matrix.test.debug && inputs.debug-suffix || '' }}
           static-suffix: ${{ inputs.static-suffix }}
         if: ${{ inputs.dry-run == false }}
 
@@ -197,7 +238,7 @@ jobs:
         id: run-tests
         run: >
           make test-prebuilt
-          TEST='${{ matrix.test-suite }}'
+          TEST='${{ matrix.test.suite }}'
           BOOT_JDK=${{ steps.bootjdk.outputs.path }}
           JT_HOME=${{ steps.jtreg.outputs.path }}
           JDK_IMAGE_DIR=${{ steps.bundles.outputs.jdk-path }}
@@ -239,7 +280,7 @@ jobs:
             echo '::warning ::Missing test-support directory'
           fi
 
-          artifact_name="results-${{ inputs.platform }}-$(echo ${{ matrix.test-name }}${{ inputs.static-suffix }} | tr '/ ' '__')"
+          artifact_name="results-${{ inputs.platform }}-$(echo ${{ matrix.test.name }}${{ inputs.static-suffix }} | tr '/ ' '__')"
           echo "artifact-name=$artifact_name" >> $GITHUB_OUTPUT
         if: always()
 
