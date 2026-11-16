@@ -152,8 +152,8 @@ public class IO {
         var pb = ProcessTools.createTestJavaProcessBuilder("-Xlog:aot=off", "-Xlog:cds=off", file.toString());
         OutputAnalyzer output = ProcessTools.executeProcess(pb);
         assertEquals(0, output.getExitValue());
-        assertTrue(output.getStderr().isEmpty());
         output.reportDiagnosticSummary();
+        assertTrue(output.getStderr().isEmpty());
         String out = output.getStdout();
         String nl = System.getProperty("line.separator");
         assertEquals("1 2 3 " + nl, out);

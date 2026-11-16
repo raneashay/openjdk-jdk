@@ -183,6 +183,10 @@ jobs:
           debug-suffix: '${{ matrix.suffix }}'
         if: ${{ inputs.dry-run == false }}
 
+      - name: 'Test branch protection flag'
+        run: ./build/*/images/jdk/bin/java -XX:UseBranchProtection=standard -version
+        if: ${{ inputs.dry-run == false }}
+
       - name: 'Upload bundles'
         uses: ./.github/actions/upload-bundles
         with:
